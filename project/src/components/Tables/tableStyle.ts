@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-export const LoginTableWrapper = styled.div`
+export const TableWrapper = styled.div`
   margin-top: 2rem;
 `;
 
-export const LoginTable = styled.table`
+export const TableStyle = styled.table`
   text-align: left;
   table-layout: fixed;
   td {
@@ -25,9 +25,9 @@ export const ClickArrow = styled.div`
 
 export const MenuTransferWrapper = styled.th`
   position: relative;
-  width: 6rem;
-  padding-left: 20px;
-  padding-right: 20px;
+  width: 120px;
+  padding-left: 10px;
+  padding-right: 10px;
   height: 100%;
 
   &:first-of-type {
@@ -46,5 +46,17 @@ export const MenuTransferWrapper = styled.th`
 
   &:hover > div {
     display: flex;
+  }
+`;
+
+export const TableHead = styled.th`
+  width: 120px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 100%;
+
+  &:first-of-type {
+    min-width: 2rem;
+    max-width: 6rem;
   }
 `;

@@ -1,40 +1,48 @@
-import React, { useState, useEffect } from 'react'
-import { GoodWrapper, SelectClient, TitleBarWrapper, TitleWrapper } from './goodsStyle'
-import { PageTitle } from '../../style/style'
-import { DatePicker, Select } from 'antd';
+import { useState, useEffect } from 'react'
+import { GoodWrapper, } from './goodsStyle'
+import { PageTitle, SelectOption, TitleBarWrapper, TitleWrapper } from '../../style/style'
+import { DatePicker } from 'antd';
 import GoodsTable from '../../components/Tables/GoodsTable/GoodsTable';
 import dayjs from 'dayjs';
 const { RangePicker } = DatePicker;
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux';
+import { storeSetSelectedWarehouseItems, storeSetFilteredGoods, storeSetGoodsAllClients, storeSetGoodsData, storeSetGoodsWareHouse, storeSetSelectedCustomerItems, storeSetSetCustomerIds, storeSetSetWarehouseIds, storeSetTransDate } from '../../store/filter-reducer';
+import Footer from '../../layout/Footer/Footer';
+import StatusBar from '../../components/StatusBar/StatusBar';
 
 
 const Goods = () => {
-  const [placement, setPlacement] = useState('topLeft');
-  const [transDate, setTransDate] = useState({
-    fromDate: "2023-10-11",
-    toDate: "2023-10-12"
-  })
+
   const [colTitle, setColTitle] = useState([])
-  const [goodsData, setGoodsData] = useState([])
-  const [goodsAllClients, setGoodsAllClients] = useState([])
-  const [goodsWarehouse, setGoodsWareHouse] = useState([])
+  const [allCol, setAllCol] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPost, setTotalPost] = useState(0)
+  const [status, setStatus] = useState([])
 
-  const [selectedCustomerItems, setSelectedCustomerItems] = useState([]);
-  const [selectedWarehouseItems, setSelectedWarehouseItems] = useState([]);
+  const dispatch = useDispatch();
+  const transDate = useSelector(state => state.filter.transDate);
+  const goodsAllClients = useSelector((state) => state.filter.goodsAllClients);
+  const goodsWarehouse = useSelector(state => state.filter.goodsWarehouse)
+  const filteredGoods = useSelector(state => state.filter.filteredGoods)
 
-  const [filteredGoods, setFilteredGoods] = useState(goodsData)
-  const [setCustomerIds, setSetCustomerIds] = useState([]);
-  const [setWarehouseIds, setSetWarehouseIds] = useState([])
+  const selectedCustomerItems = useSelector(state => state.filter.selectedCustomerItems)
+  const selectedWarehouseItems = useSelector(state => state.filter.selectedWarehouseItems)
+
+  const setCustomerIds = useSelector(state => state.filter.setCustomerIds)
+  const setWarehouseIds = useSelector(state => state.filter.setWarehouseIds)
+
+  const numberpage = useSelector(state => state.filter.numberpage);
 
   const fetchAllCustomer = async () => {
     const goodsClientsData = await axios.get("/api/khachhangs/all")
     let check = goodsClientsData.data.data;
-    setGoodsAllClients(check);
+    dispatch(storeSetGoodsAllClients(check));
   }
 
   const fetchAllWareHouse = async () => {
     const wareHouse = await axios.get("/api/chukhos?page=1&limit=1000")
-    setGoodsWareHouse(wareHouse.data.data);
+    dispatch(storeSetGoodsWareHouse(wareHouse.data.data));
   }
 
   const CLIENT_OPTIONS = goodsAllClients.map(good => good);
@@ -44,33 +52,51 @@ const Goods = () => {
   const filteredWarehouseOptions = WAREHOUSE_OPTIONS.filter((o) => !selectedWarehouseItems.includes(o.name));
 
   const fetchColData = async () => {
-    const ColData = await axios.get("/api/user/item-fields")
-    setColTitle(ColData.data)
+    const colData = await axios.get("/api/user/item-fields")
+    const data = colData.data
+    setColTitle(data)
+    setAllCol(data)
   }
 
   const fetchDataByDate = async () => {
-    const goodsDataByDate = await axios.get(`api/hanghoas?page=1&fromDate=${transDate.fromDate}&toDate=${transDate.toDate}%2023:59:59&numberpage=20`)
-    setGoodsData(goodsDataByDate.data.data);
-    setFilteredGoods(goodsDataByDate.data.data);
+    const goodsDataByDate = await axios.get(`api/hanghoas?page=1&fromDate=${transDate.fromDate}&toDate=${transDate.toDate}%2023:59:59&numberpage=${numberpage}`)
+    dispatch(storeSetGoodsData(goodsDataByDate.data.data));
+    const count = goodsDataByDate.data.count;
+    setTotalPost(count);
+
+    dispatch(storeSetFilteredGoods(goodsDataByDate.data.data));
+    setCurrentPage(1);
   }
+
   const getParamsCustomerId = () => {
-    if (setWarehouseIds.length >= 1) {
-      return `filterByWarehouses=${setWarehouseIds.join()}`
+    if (setCustomerIds.length >= 1) {
+      const id = setCustomerIds.join();
+      return `&filterByCustomers=${id}`
     }
     return ""
   }
 
   const getParamsWarehouseIds = () => {
-    if (setCustomerIds.length >= 1) {
-      return `filterByCustomers=${setCustomerIds.join()}`
+    if (setWarehouseIds.length >= 1) {
+      return `&filterByWarehouses=${setWarehouseIds.join()}`
     }
     return ""
   }
 
+  const getStatusParam = () => {
+    if (status.length >= 1) {
+      return `status=${status.join()}`
+    }
+    return "";
+  }
+
   const fetchDataByOption = async () => {
-    const goodsDataByCustomer = await axios.get(`api/hanghoas?page=1&${getParamsCustomerId()}&${getParamsWarehouseIds()}&fromDate=${transDate.fromDate}&toDate=${transDate.toDate}%2023:59:59&numberpage=20`)
+    const goodsDataByCustomer = await axios.get(`api/hanghoas?${getStatusParam()}page=${currentPage}${getParamsCustomerId()}${getParamsWarehouseIds()}&fromDate=${transDate.fromDate}&toDate=${transDate.toDate}%2023:59:59&numberpage=${numberpage}`)
     const goodsDataCustomer = goodsDataByCustomer.data.data
-    setFilteredGoods(goodsDataCustomer);
+    const count = goodsDataByCustomer.data.count;
+    setTotalPost(count);
+
+    dispatch(storeSetFilteredGoods(goodsDataCustomer));
   }
 
   const onChangeFilterCustomer = (e) => {
@@ -81,7 +107,8 @@ const Goods = () => {
     const setCustomerIds = customerIDs.filter((id, index) => {
       return customerIDs.indexOf(id) === index;
     })
-    setSetCustomerIds(setCustomerIds);
+    dispatch(storeSetSetCustomerIds(setCustomerIds));
+    setCurrentPage(1);
   }
 
   const onChangeFilterWarehouse = (e) => {
@@ -92,7 +119,8 @@ const Goods = () => {
     const setWarehouseIds = warehouseIDs.filter((id, index) => {
       return warehouseIDs.indexOf(id) === index
     })
-    setSetWarehouseIds(setWarehouseIds);
+    dispatch(storeSetSetWarehouseIds(setWarehouseIds));
+    setCurrentPage(1);
   }
 
   const dateChange = (e: []) => {
@@ -100,7 +128,9 @@ const Goods = () => {
       fromDate: dayjs(e[0]).format("YYYY-MM-DD"),
       toDate: dayjs(e[1]).format("YYYY-MM-DD"),
     }
-    setTransDate(date);
+    dispatch(storeSetTransDate(date));
+    setCurrentPage(1);
+
   };
 
   useEffect(() => {
@@ -112,24 +142,24 @@ const Goods = () => {
 
   useEffect(() => {
     fetchDataByOption();
-  }, [setCustomerIds, setWarehouseIds, transDate])
+  }, [setCustomerIds, setWarehouseIds, transDate, numberpage, currentPage, status])
 
 
   return (
     <GoodWrapper>
       <TitleBarWrapper>
         <TitleWrapper>
-          <PageTitle>Danh sach hang hoa</PageTitle>
+          <PageTitle>Danh Sách Hàng Hóa</PageTitle>
         </TitleWrapper>
-        <RangePicker placement={placement} onChange={(e) => {
+        <RangePicker onChange={(e) => {
           dateChange(e)
         }} />
-        <SelectClient
+        <SelectOption
           mode="multiple"
           placeholder="Search By Clients"
           value={selectedCustomerItems}
           onChange={(e) => {
-            setSelectedCustomerItems(e);
+            dispatch(storeSetSelectedCustomerItems(e));
             onChangeFilterCustomer(e);
           }}
 
@@ -142,12 +172,12 @@ const Goods = () => {
             label: item.name,
           }))}
         />
-        <SelectClient
+        <SelectOption
           mode="multiple"
           placeholder="Search By Warehouse"
           value={selectedWarehouseItems}
           onChange={(e) => {
-            setSelectedWarehouseItems(e);
+            dispatch(storeSetSelectedWarehouseItems(e));
             onChangeFilterWarehouse(e);
           }}
           options={filteredWarehouseOptions.map((item) => ({
@@ -156,18 +186,27 @@ const Goods = () => {
             label: item.name,
           }))}
         />
-
       </TitleBarWrapper>
 
-      <GoodsTable transDate={transDate}
+      <StatusBar
+        status={status}
+        setStatus={setStatus}
         colTitle={colTitle}
-        goodsData={goodsData}
         setColTitle={setColTitle}
-        setGoodsData={setGoodsData}
+        allCol={allCol}
+        setAllCol={setAllCol}
+      />
+
+      <GoodsTable
+        currentPage={currentPage}
+        colTitle={colTitle}
         fetchColData={fetchColData}
         filteredGoods={filteredGoods}
-
       />
+
+      <Footer currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPost={totalPost} />
 
     </GoodWrapper>
   )

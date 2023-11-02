@@ -28,7 +28,7 @@ const Login = () => {
     try {
       const response = await axios.post(url, body);
       if (response) {
-        navigate("/")
+        navigate("/goods")
       }
     } catch (e) {
       message.error("Đăng nhập thất bại!")

@@ -6,17 +6,17 @@ import {
   PofileWrapper,
 } from "./headerStyle";
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Badge, Button, Dropdown, Space } from "antd";
+import { Avatar, Badge, Dropdown, } from "antd";
 import { imagines } from "../../assets";
 import { Link, useLocation } from "react-router-dom";
 
 const headerOption = [
-  { name: "Hang Hoa", link: "/" },
-  { name: "Tien trinh van chuyen moi", link: "/news" },
-  { name: "Tien trinh van chuyen", link: "/tientrinh" },
-  { name: "Doi tac", link: "/doitac" },
-  { name: "Khach hang", link: "/khachhang" },
-  { name: "Kho", link: "/kho" },
+  { name: "Hang Hoa", link: "/goods" },
+  { name: "Tien trinh van chuyen moi", link: "/process-news" },
+  { name: "Tien trinh van chuyen", link: "/process" },
+  { name: "Doi tac", link: "/partners" },
+  { name: "Khach hang", link: "/customers" },
+  { name: "Kho", link: "/warehouses" },
   { name: "Setting", link: "setting" },
 ];
 
@@ -49,7 +49,7 @@ const items: MenuProps['items'] = [
 
 const Header = () => {
   const location = useLocation();
-  
+
   return (
     <HeaderWraper>
       <HeaderLogoWrapper>
@@ -61,9 +61,9 @@ const Header = () => {
         })}
         <PofileWrapper>
           <Dropdown menu={{ items }} placement="bottom">
-              <Badge count={0}>
-                <Avatar shape="square" icon={<UserOutlined />} />
-              </Badge>
+            <Badge count={0}>
+              <Avatar shape="square" icon={<UserOutlined />} />
+            </Badge>
           </Dropdown>
         </PofileWrapper>
       </OptionWrapper>
