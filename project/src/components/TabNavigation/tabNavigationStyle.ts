@@ -24,13 +24,13 @@ export const TabNavLi = styled.li`
   margin-right: 0.5rem;
 `;
 
-export const TabNavLink = styled.span<{ tabActive: boolean }>`
+export const TabNavLink = styled.span<{ tabactive }>`
   color: ${(props) =>
-    props.tabActive ? "rgb(51 122 183)" : "rgb(107 114 128)"};
+    props.tabactive ? "rgb(51 122 183)" : "rgb(107 114 128)"};
   padding: 0.75rem;
   text-decoration: none;
 
-  border-bottom: ${(props) => (props.tabActive ? "2px" : "0")} solid
+  border-bottom: ${(props) => (props.tabactive ? "2px" : "0")} solid
     rgb(51 122 183);
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
@@ -39,9 +39,9 @@ export const TabNavLink = styled.span<{ tabActive: boolean }>`
 
   &:hover {
     background-color: ${(props) =>
-      props.tabActive ? "transparent" : "rgb(243 244 246)"};
+      props.tabactive ? "transparent" : "rgb(243 244 246)"};
     border-bottom: ${(props) =>
-      props.tabActive
+      props.tabactive
         ? "2px solid  rgb(51 122 183)"
         : "2px solid rgb(243 244 246)"};
     border-top-left-radius: 0.25rem;

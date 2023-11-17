@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { FlexCenter } from "../../style/style";
 
-export const DebtNumber = styled.span<{ negaposi: boolean }>`
-  color: ${(props) => (props.negaposi ? "rgb(31 178 60)" : "red")};
+export const DebtNumber = styled.span<{ positive }>`
+  color: ${(props) => (props.positive ? "rgb(31 178 60)" : "red")};
 `;
 
 export const InfoButtonWrapper = styled.div`

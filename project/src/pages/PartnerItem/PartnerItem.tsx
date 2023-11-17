@@ -246,7 +246,7 @@ const PartnerItem = () => {
                     <TitleBarWrapper>
                         <PageTitle>
                             {`Đối tác:${partner.name} `}
-                            (<DebtNumber negaposi={partner.debt > 0}>{partner.debt} VNĐ </DebtNumber>)
+                            (<DebtNumber positive={partner.debt > 0 ? "positive" : ""}>{partner.debt} VNĐ </DebtNumber>)
                             {" "}
                             <InfoButtonWrapper>
                                 <InforModalButton setOpenModalInfo={setInforModal} />
