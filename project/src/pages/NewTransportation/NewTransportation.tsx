@@ -6,19 +6,16 @@ const { RangePicker } = DatePicker;
 import axios from 'axios';
 import { storeSetSelectedWarehouseItems, storeSetFilteredGoods, storeSetGoodsAllClients, storeSetGoodsData, storeSetGoodsWareHouse, storeSetSelectedCustomerItems, storeSetSetCustomerIds, storeSetSetWarehouseIds, storeSetTransDate } from '../../store/filter-reducer';
 import Footer from '../../layout/Footer/Footer';
-import StatusBar from '../../components/StatusBar/StatusBar';
-import { useDebugValue, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewTransportationTable from '../../components/Tables/NewTransportationTable/NewTransportationTable';
+import StatusBarProcessNew from '../../components/StatusBar/StatusBarProcessNew';
+import { NewTransportationStatusBarWrapper } from './newTransportationStyle';
 
 const NewTransportation = () => {
 
-  // Create array hold all object Id in a key: value
-  // For Call api with each object Id
-
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPost, setTotalPost] = useState(0);
-  const [status, setStatus] = useState([]);
-  const [objectIDs, setObjectIDs] = useState([])
+  const [status, setStatus] = useState("all");
   const [transportRoute, setTransportRoute] = useState([])
 
   const dispatch = useDispatch();
@@ -49,8 +46,14 @@ const NewTransportation = () => {
 
     const objectIds = goodsDataByDate.data.data.map(goods => goods.id)
 
+    const newRoutes = []
+
     objectIds.forEach(id => {
-      getTransport(id);
+      newRoutes.push(getTransport(id));
+    })
+
+    Promise.all(newRoutes).then(values => {
+      setTransportRoute(values)
     })
 
     dispatch(storeSetFilteredGoods(goodsDataByDate.data.data));
@@ -58,7 +61,7 @@ const NewTransportation = () => {
   }
 
   const fetchDataByOption = async () => {
-    const goodsDataByCustomer = await axios.get(`api/hanghoas?${getStatusParam()}page=${currentPage}&${getParamsCustomerId()}&${getParamsWarehouseIds()}&fromDate=${transDate.fromDate}&toDate=${transDate.toDate}%2023:59:59&numberpage=${numberpage}`)
+    const goodsDataByCustomer = await axios.get(`api/hanghoas?page=${currentPage}&${getParamsCustomerId()}&${getParamsWarehouseIds()}&fromDate=${transDate.fromDate}&toDate=${transDate.toDate}%2023:59:59&numberpage=${numberpage}${getStatusParam()}`)
     const goodsDataCustomer = goodsDataByCustomer.data.data
     const count = goodsDataByCustomer.data.count;
     setTotalPost(count);
@@ -82,7 +85,6 @@ const NewTransportation = () => {
     const response = await axios.get(`api/vanchuyens?page=1&numberpage=20&fromDate=&toDate=&item_id=${id}`)
     return response.data;
   }
-
 
   const dateChange = (e: []) => {
     const date = {
@@ -109,7 +111,7 @@ const NewTransportation = () => {
 
   const getStatusParam = () => {
     if (status.length >= 1) {
-      return `status=${status.join()}`
+      return `&transferStatus=${status}`
     }
     return "";
   }
@@ -144,7 +146,7 @@ const NewTransportation = () => {
 
   useEffect(() => {
     fetchDataByOption()
-  }, [setCustomerIds, setWarehouseIds, transDate, numberpage, currentPage])
+  }, [setCustomerIds, setWarehouseIds, status, transDate, numberpage, currentPage])
 
 
   return (
@@ -153,7 +155,7 @@ const NewTransportation = () => {
         <TitleWrapper>
           <PageTitle>Tiến trình vận chuyển mới</PageTitle>
         </TitleWrapper>
-        <RangePicker onChange={(e) => {
+        <RangePicker value={dayjs()} onChange={(e) => {
           dateChange(e)
         }} />
         <SelectOption
@@ -188,6 +190,11 @@ const NewTransportation = () => {
           }))}
         />
       </TitleBarWrapper>
+
+
+      <NewTransportationStatusBarWrapper>
+        <StatusBarProcessNew status={status} setStatus={setStatus} />
+      </NewTransportationStatusBarWrapper>
 
       <NewTransportationTable filteredGoods={filteredGoods} transportRoute={transportRoute} />
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import { TableHead, TableStyle, TableWrapper } from '../tableStyle'
+import { Link } from 'react-router-dom'
 
 const CustomersTable = ({ customersData }) => {
     return (
@@ -18,7 +19,7 @@ const CustomersTable = ({ customersData }) => {
                         return (
                             <tr key={customer.id}>
                                 <td>{customer.id}</td>
-                                <td>{customer.name}</td>
+                                <td><Link to={`/customers/${customer.id}/items`}>{customer.name}</Link></td>
                                 <td>{customer.mobile}</td>
                                 <td>{customer.debt}</td>
                             </tr>

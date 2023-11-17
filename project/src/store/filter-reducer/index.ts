@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
 
 const initialState: any = {
   goodsData: [],
@@ -9,10 +10,12 @@ const initialState: any = {
   selectedWarehouseItems: [],
   setCustomerIds: [],
   setWarehouseIds: [],
+  colors: {},
   transDate: {
-    fromDate: "2023-10-11",
-    toDate: "2023-10-13",
+    fromDate: dayjs().format("YYYY-MM-DD"),
+    toDate: dayjs().format("YYYY-MM-DD"),
   },
+  partner: {},
   numberpage: 10,
 };
 
@@ -56,6 +59,12 @@ const filterSlice = createSlice({
     storeSetNumberPage: (state: any, { payload }: PayloadAction<any>) => {
       state.numberpage = payload;
     },
+    storeSetColors: (state: any, { payload }: PayloadAction<any>) => {
+      state.colors = payload;
+    },
+    storeSetPartner: (state: any, { payload }: PayloadAction<any>) => {
+      state.partner = payload;
+    },
   },
 });
 
@@ -70,5 +79,7 @@ export const {
   storeSetSetWarehouseIds,
   storeSetTransDate,
   storeSetNumberPage,
+  storeSetColors,
+  storeSetPartner,
 } = filterSlice.actions;
 export default filterSlice.reducer;

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { PageWrapper, SelectOption, TitleBarWrapper, TitleWrapper } from '../../style/style'
+import { PageTitle, PageWrapper, SelectOption, TitleBarWrapper, TitleWrapper } from '../../style/style'
 import StatusBar from '../../components/StatusBar/StatusBar'
 import { useDispatch, useSelector } from 'react-redux';
 import Footer from '../../layout/Footer/Footer';
 import { storeSetGoodsAllClients, storeSetTransDate } from '../../store/filter-reducer';
 import axios from 'axios';
-import { DatePicker } from 'antd';
+import { Checkbox, DatePicker, Input } from 'antd';
 import ProcessTable from '../../components/Tables/ProcessTable/ProcessTable';
 import dayjs from 'dayjs';
+import StatusBarProcessNew from '../../components/StatusBar/StatusBarProcessNew';
+import { ProcessStatusBarWrapper } from './processStyle';
+import StatusBarProcess from '../../components/StatusBar/StatusBarProcess';
 const { RangePicker } = DatePicker;
 
 
@@ -23,6 +26,10 @@ const Process = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPost, setTotalPost] = useState(0)
   const [tags, setTag] = useState([])
+  const [status, setStatus] = useState([])
+
+  const [showdDeliveryDate, setShowDeliveryDate] = useState(false)
+
 
   const dispatch = useDispatch();
   const transDate = useSelector(state => state.filter.transDate);
@@ -70,6 +77,13 @@ const Process = () => {
     return ""
   }
 
+  const getDeliveryDate = () => {
+    if (showdDeliveryDate) {
+      return `&byDeliveryDate=1`
+    }
+    return ""
+  }
+
   const getParamsCustomerId = () => {
     if (setCustomerIds.length >= 1) {
       return `filterByCustomers=${setCustomerIds.join()}`
@@ -80,6 +94,13 @@ const Process = () => {
   const getParamsTagsId = () => {
     if (setTagsIds.length >= 1) {
       return `&filterByTags=${setTagsIds.join()}`
+    }
+    return ""
+  }
+
+  const getStatus = () => {
+    if (status.length > 0) {
+      return `&status=${status.join()}`
     }
     return ""
   }
@@ -146,23 +167,30 @@ const Process = () => {
   };
 
   const getProcessByOption = async () => {
-    const response = await axios.get(`/api/vanchuyens?page=${currentPage}&numberpage=${numberpage}${getParamsTagsId()}&${getParamsCustomerId()}&${getParamsPartnersIds()}&fromDate=${transDate.fromDate}&toDate=${transDate.toDate}`)
+    const response = await axios.get(`/api/vanchuyens?page=${currentPage}&numberpage=${numberpage}${getParamsTagsId()}&${getParamsCustomerId()}&${getParamsPartnersIds()}${getDeliveryDate()}&fromDate=${transDate.fromDate}&toDate=${transDate.toDate}${getStatus()}`)
     const count = response.data.count;
     setTotalPost(count);
 
     setFilteredProcess(response.data.data);
-
   }
 
   useEffect(() => {
     getProcessByOption()
-  }, [numberpage, transDate, setCustomerIds, setPartnersIds, setTagsIds, currentPage])
+  }, [numberpage, transDate, setCustomerIds, setPartnersIds, setTagsIds, currentPage, showdDeliveryDate, status])
 
   return (
     <PageWrapper>
       <TitleBarWrapper>
-        <TitleWrapper>Process</TitleWrapper>
-        <RangePicker onChange={(e) => {
+        <TitleWrapper style={{
+          width: "40%"
+        }}>
+          <PageTitle>
+            Tiến trình vận chuyển
+          </PageTitle>
+        </TitleWrapper>
+        <RangePicker defaultValue={
+          [dayjs(), dayjs()]
+        } onChange={(e) => {
           dateChange(e)
         }} />
         <SelectOption
@@ -213,7 +241,18 @@ const Process = () => {
         />
       </TitleBarWrapper>
 
-      <ProcessTable filteredProcess={filteredProcess} currentPage={currentPage} />
+
+      <ProcessStatusBarWrapper>
+        <div>
+          <StatusBarProcess status={status} setStatus={setStatus} />
+        </div>
+        <div>
+          <Checkbox onClick={() => { setShowDeliveryDate(prev => !prev) }} />
+          <span> Ngày phát</span>
+        </div>
+      </ProcessStatusBarWrapper>
+
+      <ProcessTable getProcessByOption={getProcessByOption} filteredTagsOptions={filteredTagsOptions} filteredProcess={filteredProcess} currentPage={currentPage} />
 
       <Footer currentPage={currentPage}
         setCurrentPage={setCurrentPage}

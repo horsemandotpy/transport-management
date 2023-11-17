@@ -1,4 +1,5 @@
-import { TableHead, TableStyle, TableWrapper } from "../tableStyle"
+import { Link } from "react-router-dom"
+import { TableHead, TableStyle, TableWrapper, ThCenter } from "../tableStyle"
 
 const PartnersTable = ({ partnerData }) => {
     return (
@@ -6,15 +7,15 @@ const PartnersTable = ({ partnerData }) => {
             <TableStyle>
                 <thead>
                     <tr>
-                        <TableHead>STT</TableHead>
-                        <TableHead>Họ tên</TableHead>
-                        <TableHead>Số ĐT</TableHead>
-                        <TableHead>Phương tiện</TableHead>
-                        <TableHead>KG(VNĐ)</TableHead>
-                        <TableHead>Kiện(VNĐ)</TableHead>
-                        <TableHead>Kiện lớn(VNĐ)</TableHead>
-                        <TableHead>Vận chuyển từ - đến</TableHead>
-                        <TableHead>Dư nợ(VNĐ)</TableHead>
+                        <ThCenter>STT</ThCenter>
+                        <ThCenter>Họ tên</ThCenter>
+                        <ThCenter>Số ĐT</ThCenter>
+                        <ThCenter>Phương tiện</ThCenter>
+                        <ThCenter>KG(VNĐ)</ThCenter>
+                        <ThCenter>Kiện(VNĐ)</ThCenter>
+                        <ThCenter>Kiện lớn(VNĐ)</ThCenter>
+                        <ThCenter>Vận chuyển từ - đến</ThCenter>
+                        <ThCenter>Dư nợ(VNĐ)</ThCenter>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,7 +23,11 @@ const PartnersTable = ({ partnerData }) => {
                         return (
                             <tr key={partner.id}>
                                 <td>{partner.id}</td>
-                                <td>{partner.name}</td>
+                                <td>
+                                    <Link to={`/partners/${partner.id}/progress`}>
+                                        {partner.name}
+                                    </Link>
+                                </td>
                                 <td>{partner.phone}</td>
                                 <td>{partner.vehicle}</td>
                                 <td>{partner.pricePerKg}</td>

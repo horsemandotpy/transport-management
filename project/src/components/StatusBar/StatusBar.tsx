@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { MenuButtonWrapper, MenuFilter, MenuWrapper, StatusBarWraper, StatusBarWraperChild } from './statusBarStyle'
-import { Dropdown, Space, Tag } from 'antd'
+import { StatusBarWraper, StatusBarWraperChild } from './statusBarStyle'
+import { Space, Tag } from 'antd'
 import { CheckCircleOutlined, CheckOutlined, CheckSquareOutlined, ClockCircleOutlined, MinusCircleOutlined, SyncOutlined } from '@ant-design/icons'
-import axios, { all } from 'axios'
 import ColumnFilter from '../ColumnFilter/ColumnFilter'
-
 
 const StatusBar = ({ status, setStatus, colTitle, setColTitle, allCol, setAllCol }) => {
 

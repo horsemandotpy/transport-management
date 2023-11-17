@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { GoodWrapper, } from './goodsStyle'
-import { PageTitle, SelectOption, TitleBarWrapper, TitleWrapper } from '../../style/style'
+import { AddButton, PageTitle, SelectOption, TitleBarWrapper, TitleWrapper } from '../../style/style'
 import { DatePicker } from 'antd';
 import GoodsTable from '../../components/Tables/GoodsTable/GoodsTable';
 import dayjs from 'dayjs';
@@ -10,15 +10,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { storeSetSelectedWarehouseItems, storeSetFilteredGoods, storeSetGoodsAllClients, storeSetGoodsData, storeSetGoodsWareHouse, storeSetSelectedCustomerItems, storeSetSetCustomerIds, storeSetSetWarehouseIds, storeSetTransDate } from '../../store/filter-reducer';
 import Footer from '../../layout/Footer/Footer';
 import StatusBar from '../../components/StatusBar/StatusBar';
+import { Link } from 'react-router-dom';
+import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
+
 
 
 const Goods = () => {
+
+  // Delete Goods
+  // Select Goods
+  // Customer Page
+  // Goods Page
+  // Partner Page
 
   const [colTitle, setColTitle] = useState([])
   const [allCol, setAllCol] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPost, setTotalPost] = useState(0)
   const [status, setStatus] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const dispatch = useDispatch();
   const transDate = useSelector(state => state.filter.transDate);
@@ -45,7 +55,7 @@ const Goods = () => {
     dispatch(storeSetGoodsWareHouse(wareHouse.data.data));
   }
 
-  const CLIENT_OPTIONS = goodsAllClients.map(good => good);
+  const CLIENT_OPTIONS = goodsAllClients.map(goods => goods);
   const WAREHOUSE_OPTIONS = goodsWarehouse.map(goods => goods)
 
   const filteredClientOptions = CLIENT_OPTIONS.filter((o) => !selectedCustomerItems.includes(o.name));
@@ -146,69 +156,78 @@ const Goods = () => {
 
 
   return (
-    <GoodWrapper>
-      <TitleBarWrapper>
-        <TitleWrapper>
-          <PageTitle>Danh Sách Hàng Hóa</PageTitle>
-        </TitleWrapper>
-        <RangePicker onChange={(e) => {
-          dateChange(e)
-        }} />
-        <SelectOption
-          mode="multiple"
-          placeholder="Search By Clients"
-          value={selectedCustomerItems}
-          onChange={(e) => {
-            dispatch(storeSetSelectedCustomerItems(e));
-            onChangeFilterCustomer(e);
-          }}
 
-          style={{
-            width: '100%',
-          }}
-          options={filteredClientOptions.map((item) => ({
-            key: item.id,
-            value: item.name,
-            label: item.name,
-          }))}
+    <>
+      {isLoading && <LoadingScreen message={`Đang chuyển cột`} />}
+      <GoodWrapper>
+        <TitleBarWrapper>
+          <TitleWrapper>
+            <PageTitle>Danh Sách Hàng Hóa</PageTitle>
+            <Link to="/goods/create-items"><AddButton><i className="fa-solid fa-circle-plus"></i></AddButton></Link>
+          </TitleWrapper>
+          <RangePicker defaultValue={[dayjs(), dayjs()]} onChange={(e) => {
+            dateChange(e)
+          }} />
+          <SelectOption
+            mode="multiple"
+            placeholder="Search By Clients"
+            value={selectedCustomerItems}
+            onChange={(e) => {
+              dispatch(storeSetSelectedCustomerItems(e));
+              onChangeFilterCustomer(e);
+            }}
+
+            style={{
+              width: '100%',
+            }}
+            options={filteredClientOptions.map((item) => ({
+              key: item.id,
+              value: item.name,
+              label: item.name,
+            }))}
+          />
+          <SelectOption
+            mode="multiple"
+            placeholder="Search By Warehouse"
+            value={selectedWarehouseItems}
+            onChange={(e) => {
+              dispatch(storeSetSelectedWarehouseItems(e));
+              onChangeFilterWarehouse(e);
+            }}
+            options={filteredWarehouseOptions.map((item) => ({
+              key: item.id,
+              value: item.name,
+              label: item.name,
+            }))}
+          />
+        </TitleBarWrapper>
+
+        <StatusBar
+          status={status}
+          setStatus={setStatus}
+          colTitle={colTitle}
+          setColTitle={setColTitle}
+          allCol={allCol}
+          setAllCol={setAllCol}
         />
-        <SelectOption
-          mode="multiple"
-          placeholder="Search By Warehouse"
-          value={selectedWarehouseItems}
-          onChange={(e) => {
-            dispatch(storeSetSelectedWarehouseItems(e));
-            onChangeFilterWarehouse(e);
-          }}
-          options={filteredWarehouseOptions.map((item) => ({
-            key: item.id,
-            value: item.name,
-            label: item.name,
-          }))}
+
+        <GoodsTable
+          status={status}
+          currentPage={currentPage}
+          colTitle={colTitle}
+          fetchColData={fetchColData}
+          filteredGoods={filteredGoods}
+          setIsLoading={setIsLoading}
+          fetchDataByOption={fetchDataByOption}
         />
-      </TitleBarWrapper>
 
-      <StatusBar
-        status={status}
-        setStatus={setStatus}
-        colTitle={colTitle}
-        setColTitle={setColTitle}
-        allCol={allCol}
-        setAllCol={setAllCol}
-      />
+        <Footer currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPost={totalPost} />
 
-      <GoodsTable
-        currentPage={currentPage}
-        colTitle={colTitle}
-        fetchColData={fetchColData}
-        filteredGoods={filteredGoods}
-      />
+      </GoodWrapper>
+    </>
 
-      <Footer currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPost={totalPost} />
-
-    </GoodWrapper>
   )
 }
 

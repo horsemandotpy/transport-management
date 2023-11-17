@@ -24,8 +24,6 @@ export const TitleWrapper = styled.div`
 export const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 1200px;
-  margin: 0 auto;
 `;
 
 export const SelectOption = styled(Select)`
@@ -35,4 +33,18 @@ export const SelectOption = styled(Select)`
   .ant-select-arrow {
     right: 20px;
   }
+`;
+
+export const AddButton = styled.span`
+  display: block;
+  color: rgb(51, 122, 183);
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 900;
+`;
+
+export const FlexCenter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

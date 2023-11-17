@@ -13,18 +13,31 @@ import Partners from "./pages/Partners/Partners";
 import Process from "./pages/Process/Process";
 import Customers from "./pages/Customers/Customers";
 import Warehouses from "./pages/Warehouses/Warehouses";
-import { useEffect } from "react";
+import CreateItem from "./pages/CreateItem/CreateItem";
+import GoodsItem from "./pages/GoodsItem/GoodsItem";
+import CustomerItem from "./pages/CustomerItem/CustomerItem";
+import PartnerItem from "./pages/PartnerItem/PartnerItem";
+import PartnerItemProcess from "./pages/PartnerItemProcess/PartnerItemProcesss";
+import PartnerPayment from "./pages/PartnerPayment/PartnerPayment";
+
+const headerOption = [
+  { name: "Hàng hóa", link: "/goods" },
+  { name: "Tiến trình vận chuyển mới", link: "/process-news" },
+  { name: "Tiến trình vận chuyển", link: "/process" },
+  { name: "Đối tác", link: "/partners" },
+  { name: "Khách hàng", link: "/customers" },
+  { name: "Kho", link: "/warehouses" },
+  { name: "Setting", link: "setting" },
+];
 
 const RootRouter = () => {
   return (
     <>
-      <Header />
+      <Header headerOption={headerOption} />
       <Outlet />
     </>
   );
 };
-
-
 
 const router = createBrowserRouter([
   {
@@ -34,6 +47,14 @@ const router = createBrowserRouter([
       {
         path: "/goods",
         element: <Goods />,
+      },
+      {
+        path: "/goods/:id",
+        element: <GoodsItem />
+      },
+      {
+        path: "/goods/create-items",
+        element: <CreateItem />
       },
       {
         path: "/process-news",
@@ -48,8 +69,26 @@ const router = createBrowserRouter([
         element: <Partners />
       },
       {
+        path: "/partners/:id",
+        element: <PartnerItem />,
+        children: [
+          {
+            path: "/partners/:id/progress",
+            element: <PartnerItemProcess />
+          },
+          {
+            path: "/partners/:id/payment",
+            element: <PartnerPayment />
+          },
+        ]
+      },
+      {
         path: "/customers",
         element: <Customers />
+      },
+      {
+        path: "/customers/:id/items",
+        element: <CustomerItem />
       },
       {
         path: "/warehouses",
@@ -69,7 +108,7 @@ function App() {
   return (
     <Provider store={store}>
       <RouterProvider router={router}>
-        <Header />
+        <Header headerOption={headerOption} />
       </RouterProvider>
     </Provider>
 
