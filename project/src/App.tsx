@@ -107,9 +107,7 @@ function App() {
 
   return (
     <Provider store={store}>
-      <RouterProvider router={router}>
-        <Header headerOption={headerOption} />
-      </RouterProvider>
+      <RouterProvider router={router} />
     </Provider>
 
   );

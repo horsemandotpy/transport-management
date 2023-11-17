@@ -39,7 +39,7 @@ const PartnerPaymentTable = ({ paymentData }) => {
                         }
 
                         return (
-                            <tr>
+                            <tr key={i}>
                                 <TableData>{i + 1}</TableData>
                                 <TableData>{record.paymentDate && dayjs(record.paymentDate).format("DD-MM-YYYY")}</TableData>
                                 <TableData>{record.employee}</TableData>
