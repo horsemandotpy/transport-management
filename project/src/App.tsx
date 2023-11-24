@@ -19,6 +19,16 @@ import CustomerItem from "./pages/CustomerItem/CustomerItem";
 import PartnerItem from "./pages/PartnerItem/PartnerItem";
 import PartnerItemProcess from "./pages/PartnerItemProcess/PartnerItemProcesss";
 import PartnerPayment from "./pages/PartnerPayment/PartnerPayment";
+import CustomerItems from "./pages/CustomerItems/CustomerItems";
+import CustomerItemDebt from "./pages/CustomerItemDebt/CustomerItemDebt";
+import CustomerPayment from "./pages/CustomerPayment/CustomerPayment";
+import CustomerReport from "./pages/CustomerReport/CustomerReport";
+import WarehouseItem from "./pages/WarehouseItem/WarehouseItem";
+import WarehouseItems from "./pages/WarehouseItems/WarehouseItems";
+import WarehouseDebt from "./pages/WarehouseDebt/WarehouseDebt";
+import WarehousePayment from "./pages/WarehousePayment/WarehousePayment";
+import SettingExchange from "./pages/SettingExchangeRate/SettingExchange";
+import UserInfo from "./pages/UserInfo/UserInfo";
 
 const headerOption = [
   { name: "Hàng hóa", link: "/goods" },
@@ -27,7 +37,7 @@ const headerOption = [
   { name: "Đối tác", link: "/partners" },
   { name: "Khách hàng", link: "/customers" },
   { name: "Kho", link: "/warehouses" },
-  { name: "Setting", link: "setting" },
+  { name: "Setting", link: "/setting" },
 ];
 
 const RootRouter = () => {
@@ -87,12 +97,56 @@ const router = createBrowserRouter([
         element: <Customers />
       },
       {
-        path: "/customers/:id/items",
-        element: <CustomerItem />
+        path: "/customers/:id",
+        element: <CustomerItem />,
+        children: [
+          {
+            path: "/customers/:id/items",
+            element: <CustomerItems />
+          },
+          {
+            path: "/customers/:id/payment",
+            element: <CustomerPayment />
+          },
+          {
+            path: "/customers/:id/debt",
+            element: <CustomerItemDebt />
+          },
+          {
+            path: "/customers/:id/report",
+            element: <CustomerReport />
+          },
+        ]
       },
       {
         path: "/warehouses",
-        element: <Warehouses />
+        element: <Warehouses />,
+      },
+      {
+        path: "/warehouses/:id",
+        element: <WarehouseItem />,
+        children: [
+          {
+            path: "/warehouses/:id/items",
+            element: <WarehouseItems />
+          },
+          {
+            path: "/warehouses/:id/payment",
+            element: <WarehousePayment />
+          },
+          {
+            path: "/warehouses/:id/debt",
+            element: <WarehouseDebt />
+          },
+        ]
+      },
+      {
+        path: "/setting",
+        element: <SettingExchange />,
+      },
+      {
+        path: "/user/info-user",
+        element: <UserInfo />
       }
 
     ],

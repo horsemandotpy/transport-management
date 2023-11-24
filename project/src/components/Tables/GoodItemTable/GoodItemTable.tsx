@@ -12,7 +12,6 @@ import axios from 'axios'
 
 const GoodItemTable = ({ processes, goods, getPrice, REGEX_NUMBER, tagsData, getProcessInfo }) => {
 
-    const { id } = useParams()
     const [changeStatus, setChangeStatus] = useState()
     const [completeProcessModal, setCompleteProcessModal] = useState(false)
     const [editProcessModal, setEditProcessModal] = useState(false)
@@ -59,6 +58,7 @@ const GoodItemTable = ({ processes, goods, getPrice, REGEX_NUMBER, tagsData, get
             return "Hoàn thành"
         }
     }
+
     return (
         <TableWrapper>
 

@@ -16,23 +16,23 @@ const items: MenuProps['items'] = [
   {
     key: '1',
     label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+      <Link to="/user/info-user">
         anhminh
-      </a>
+      </Link>
     ),
   },
   {
     key: '2',
     label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-        usersetting
-      </a>
+      <Link to="/user/user-setting">
+        User Settings
+      </Link>
     ),
   },
   {
     key: '3',
     label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+      <a>
         Logout
       </a>
     ),

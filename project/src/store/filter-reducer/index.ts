@@ -12,10 +12,12 @@ const initialState: any = {
   setWarehouseIds: [],
   colors: {},
   transDate: {
-    fromDate: dayjs().format("YYYY-MM-DD"),
+    fromDate: dayjs().startOf("M").format("YYYY-MM-DD"),
     toDate: dayjs().format("YYYY-MM-DD"),
   },
   partner: {},
+  customer: {},
+  warehouse: {},
   numberpage: 10,
 };
 
@@ -65,6 +67,12 @@ const filterSlice = createSlice({
     storeSetPartner: (state: any, { payload }: PayloadAction<any>) => {
       state.partner = payload;
     },
+    storeSetCustomer: (state: any, { payload }: PayloadAction<any>) => {
+      state.customer = payload;
+    },
+    storeSetWarehouse: (state: any, { payload }: PayloadAction<any>) => {
+      state.warehouse = payload;
+    },
   },
 });
 
@@ -81,5 +89,7 @@ export const {
   storeSetNumberPage,
   storeSetColors,
   storeSetPartner,
+  storeSetCustomer,
+  storeSetWarehouse,
 } = filterSlice.actions;
 export default filterSlice.reducer;

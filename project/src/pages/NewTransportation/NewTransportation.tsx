@@ -155,9 +155,11 @@ const NewTransportation = () => {
         <TitleWrapper>
           <PageTitle>Tiến trình vận chuyển mới</PageTitle>
         </TitleWrapper>
-        <RangePicker value={dayjs()} onChange={(e) => {
-          dateChange(e)
-        }} />
+        <RangePicker
+          defaultValue={[dayjs().startOf("M"), dayjs()]}
+          onChange={(e) => {
+            dateChange(e)
+          }} />
         <SelectOption
           mode="multiple"
           placeholder="Search By Clients"

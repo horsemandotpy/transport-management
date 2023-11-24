@@ -35,14 +35,14 @@ const PartnerItem = () => {
         }
     ]
 
-    const getPartnerInfor = async (id) => {
+    const getPartnerInfor = async (id: string) => {
         const data = await axios.get(`/api/doitacs/${id}`)
         dispatch(storeSetPartner(data.data))
         setNewPartner(data.data)
         setIsLoading(false)
     }
 
-    const postEditPartnerInfor = async (id) => {
+    const postEditPartnerInfor = async (id: string) => {
         setEditLoading(true)
         await axios.post(`/api/doitacs/${id}`, newPartner)
         const newData = await axios.get(`/api/doitacs/${id}`)
@@ -246,7 +246,7 @@ const PartnerItem = () => {
                     <TitleBarWrapper>
                         <PageTitle>
                             {`Đối tác:${partner.name} `}
-                            (<DebtNumber positive={partner.debt > 0 ? "positive" : ""}>{partner.debt} VNĐ </DebtNumber>)
+                            (<DebtNumber positive={partner.debt > 0 ? "positive" : ""}>{partner.debt} VNĐ</DebtNumber>)
                             {" "}
                             <InfoButtonWrapper>
                                 <InforModalButton setOpenModalInfo={setInforModal} />

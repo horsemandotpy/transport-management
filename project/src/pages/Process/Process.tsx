@@ -188,11 +188,16 @@ const Process = () => {
             Tiến trình vận chuyển
           </PageTitle>
         </TitleWrapper>
-        <RangePicker defaultValue={
-          [dayjs(), dayjs()]
-        } onChange={(e) => {
-          dateChange(e)
-        }} />
+        <RangePicker
+          style={{
+            flexBasis: '20%',
+            marginRight: "1rem"
+          }}
+          defaultValue={
+            [dayjs().startOf("M"), dayjs()]
+          } onChange={(e) => {
+            dateChange(e)
+          }} />
         <SelectOption
           mode="multiple"
           placeholder="Search By Clients"
@@ -203,7 +208,7 @@ const Process = () => {
           }}
 
           style={{
-            width: '100%',
+            flexBasis: '13%',
           }}
           options={filteredClientOptions.map((item) => ({
             key: item.id,
@@ -213,6 +218,9 @@ const Process = () => {
         />
         <SelectOption
           mode="multiple"
+          style={{
+            flexBasis: '13%',
+          }}
           placeholder="Search By Partners"
           value={selectedPartnersItems}
           onChange={(e) => {
@@ -229,6 +237,9 @@ const Process = () => {
           mode="multiple"
           placeholder="Search By Tags"
           value={selectedTagsItems}
+          style={{
+            flexBasis: '13%',
+          }}
           onChange={(e) => {
             setSelectedTagsItems(e)
             onChangeFilterTags(e)

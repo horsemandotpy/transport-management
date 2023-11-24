@@ -165,7 +165,7 @@ const Goods = () => {
             <PageTitle>Danh Sách Hàng Hóa</PageTitle>
             <Link to="/goods/create-items"><AddButton><i className="fa-solid fa-circle-plus"></i></AddButton></Link>
           </TitleWrapper>
-          <RangePicker defaultValue={[dayjs(), dayjs()]} onChange={(e) => {
+          <RangePicker defaultValue={[dayjs().startOf("M"), dayjs()]} onChange={(e) => {
             dateChange(e)
           }} />
           <SelectOption
