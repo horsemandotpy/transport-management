@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const TableWrapper = styled.div`
@@ -115,4 +116,9 @@ export const Tabody = styled.tbody`
   border-bottom-width: 0px;
   border-style: solid;
   border-color: #e5e7eb;
+`;
+
+export const LinkStyle = styled(Link)`
+  text-decoration: none;
+  color: rgb(51 122 183);
 `;

@@ -24,6 +24,7 @@ export const OptionWrapper = styled.ul`
   justify-content: flex-end;
   align-items: center;
   width: 80%;
+  padding-right: 0.5rem;
 
   li {
     list-style: none;
@@ -32,12 +33,12 @@ export const OptionWrapper = styled.ul`
     padding: 1rem;
   }
 
-   .active {
+  .active {
     background-color: #e7e7e7;
   }
 
   li:active {
-    background-color: red;
+    background-color: #e7e7e7;
   }
 
   li a {
@@ -53,4 +54,5 @@ export const PofileWrapper = styled.div`
   width: 5%;
   display: flex;
   align-items: center;
+  padding-left: 1rem;
 `;

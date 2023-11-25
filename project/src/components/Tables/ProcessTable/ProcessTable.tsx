@@ -1,4 +1,4 @@
-import { ThCenter, TableStyle, TableWrapper } from '../tableStyle'
+import { ThCenter, TableStyle, TableWrapper, LinkStyle } from '../tableStyle'
 import { useSelector } from 'react-redux'
 import dayjs from 'dayjs'
 import { useState } from 'react'
@@ -276,20 +276,24 @@ const ProcessTable = ({ filteredProcess, currentPage, filteredTagsOptions, getPr
                         return (
                             <tr key={process.id}>
                                 <td>{+numberpage * (currentPage - 1) + index + 1}</td>
-                                <td>{process.item.customer.name}</td>
-                                <td>{process.partner.name}</td>
+                                <td><LinkStyle to={`/customers/${process.item.customer.id}`}>{process.item.customer.name}</LinkStyle></td>
+                                <td><LinkStyle to={`/partners/${process.partner.id}`}>{process.partner.name}</LinkStyle></td>
                                 <td>{process.tags.map(tag => tag.name).join()}</td>
-                                <td>{process.item.name}</td>
-                                <td>{process.item.warehouse.name}</td>
+                                <td><LinkStyle to={`/goods/${process.item.id}`}>{process.item.name}</LinkStyle></td>
+                                <td><LinkStyle to={`/warehouses/${process.item.warehouse.id}`}>{process.item.warehouse.name}</LinkStyle></td>
                                 <td>{process.item.weight}</td>
                                 <td>{dayjs(process.fromDate).format("DD/MM/YYYY")}</td>
                                 <td>{process.deliveryDate ? dayjs(process.deliveryDate).format("DD/MM/YYYY") : ""}</td>
                                 <td>
-                                    {process.status === 1 || process.status === 0 && <i onClick={() => {
-                                        setSelectedTags(process.tags.map(tag => tag.name))
-                                        setEditProcess(process)
-                                        setEditProcessModal(true)
-                                    }} className="fa-regular fa-pen-to-square"></i>}
+                                    {process.status === 1 || process.status === 0 &&
+                                        <i
+                                            style={{ color: "blue", cursor: "pointer", fontSize: "1.2rem" }}
+                                            onClick={() => {
+                                                setSelectedTags(process.tags.map(tag => tag.name))
+                                                setEditProcess(process)
+                                                setEditProcessModal(true)
+                                            }} className="fa-regular fa-pen-to-square"
+                                        ></i>}
                                 </td>
                             </tr>
                         )

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { MaxContentContainer, ProcessTH, ProcessWrapper, TableStyle, TableWrapper, Tabody, ThCenter } from '../tableStyle'
+import { LinkStyle, MaxContentContainer, ProcessTH, ProcessWrapper, TableStyle, TableWrapper, Tabody, ThCenter } from '../tableStyle'
 import { CalendarTagsWrapper, CalendarWrapper } from './newTransportationTableStyle'
 
 const NewTransportationTable = ({ filteredGoods, transportRoute }) => {
@@ -33,9 +33,9 @@ const NewTransportationTable = ({ filteredGoods, transportRoute }) => {
                         return (
                             <tr key={goods.id}>
                                 <td>{index + 1}</td>
-                                <td><MaxContentContainer>{goods.customer.name}</MaxContentContainer></td>
-                                <td><MaxContentContainer>{goods.warehouse.name}</MaxContentContainer></td>
-                                <td><MaxContentContainer>{goods.name}</MaxContentContainer></td>
+                                <td><MaxContentContainer><LinkStyle to={`/customers/${goods.customer.id}/items`}>{goods.customer.name}</LinkStyle></MaxContentContainer></td>
+                                <td><MaxContentContainer><LinkStyle to={`/warehouses/${goods.warehouse.id}/items`}>{goods.warehouse.name}</LinkStyle></MaxContentContainer></td>
+                                <td><MaxContentContainer><LinkStyle to={`/goods/${goods.id}`}>{goods.name}</LinkStyle></MaxContentContainer></td>
                                 <td>{goods.weight}</td>
                                 {transportRoute.filter(object => {
                                     return object.data[0].item_id === goods.id

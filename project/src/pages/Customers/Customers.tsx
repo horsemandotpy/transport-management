@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PageWrapper, TitleBarWrapper, TitleWrapper } from '../../style/style';
 import Footer from '../../layout/Footer/Footer';
 import axios from 'axios';
@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import CustomersTable from '../../components/Tables/CustomersTable/CustomersTable';
 
 const Customers = () => {
-    const numberpage = useSelector(state => state.filter.numberpage);
+    const numberpage = useSelector((state: any) => state.filter.numberpage);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPost, setTotalPost] = useState(0)
@@ -31,7 +31,7 @@ const Customers = () => {
                     <PageWrapper>Danh sách khách hàng</PageWrapper>
                 </TitleWrapper>
                 <TitleWrapper>
-                    <input placeholder='Tìm khách hàng' onKeyDown={(e) => {
+                    <input placeholder='Tìm khách hàng' onKeyDown={(e: any) => {
                         if (e.key === "Enter") {
                             setSearchByName(e.target.value);
                         }

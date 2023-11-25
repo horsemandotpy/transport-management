@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { MenuTransferWrapper, ClickArrow, TableWrapper, TableStyle } from '../tableStyle'
+import { MenuTransferWrapper, ClickArrow, TableWrapper, TableStyle, LinkStyle } from '../tableStyle'
 import { useSelector } from 'react-redux'
 import { useState } from 'react'
 import { DropdownCheckboxAction, DropdownWrapper, FirstTH, IndexBox, IndexButtonWrapper, TableRowItem } from './goodTableStyle'
@@ -174,19 +174,19 @@ const GoodsTable = ({ colTitle,
                                     let itemData = < td key={colElement.id} > {itemLabel}</td>
 
                                     if (`${colElement.name}` === "customer") {
-                                        itemData = < td key={colElement.id} ><Link to={`/customers/${item.customer.id}/items`}>{itemLabel}</Link></td>
+                                        itemData = < td key={colElement.id} ><LinkStyle to={`/customers/${item.customer.id}/items`}>{itemLabel}</LinkStyle></td>
                                     }
 
                                     if (`${colElement.name}` === "name") {
-                                        itemData = < td key={colElement.id} ><Link to={`/goods/${item.id}`}>{itemLabel}</Link></td>
+                                        itemData = < td key={colElement.id} ><LinkStyle to={`/goods/${item.id}`}>{itemLabel}</LinkStyle></td>
                                     }
 
                                     if (`${colElement.name}` === "partner") {
-                                        itemData = < td key={colElement.id} ><Link to={`/partners/${item.partner.id}`}>{itemLabel}</Link></td>
+                                        itemData = < td key={colElement.id} ><LinkStyle to={`/partners/${item.partner.id}`}>{itemLabel}</LinkStyle></td>
                                     }
 
                                     if (`${colElement.name}` === "warehouse") {
-                                        itemData = < td key={colElement.id} ><Link to={`/warehouses/${item.warehouse.id}`}>{itemLabel}</Link></td>
+                                        itemData = < td key={colElement.id} ><LinkStyle to={`/warehouses/${item.warehouse.id}`}>{itemLabel}</LinkStyle></td>
                                     }
 
                                     if (`${colElement.name}` === "startDate") {

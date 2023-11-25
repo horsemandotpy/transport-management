@@ -1,8 +1,6 @@
-import React from 'react'
-import { TableHead, TableStyle, TableWrapper } from '../tableStyle'
-import { Link } from 'react-router-dom'
+import { LinkStyle, TableHead, TableStyle, TableWrapper } from '../tableStyle'
 
-const CustomersTable = ({ customersData }) => {
+const CustomersTable = ({ customersData }: any) => {
     return (
         <TableWrapper>
             <TableStyle>
@@ -15,19 +13,21 @@ const CustomersTable = ({ customersData }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {customersData.map(customer => {
+                    {customersData.map((customer: any) => {
                         return (
                             <tr key={customer.id}>
                                 <td>{customer.id}</td>
-                                <td><Link to={`/customers/${customer.id}/items`}>{customer.name}</Link></td>
+                                <td><LinkStyle to={`/customers/${customer.id}/items`}>{customer.name}</LinkStyle></td>
                                 <td>{customer.mobile}</td>
-                                <td>{customer.debt}</td>
+                                <td><span>
+                                    {customer.debt}
+                                </span></td>
                             </tr>
                         )
                     })}
                 </tbody>
             </TableStyle>
-        </TableWrapper>
+        </TableWrapper >
     )
 }
 

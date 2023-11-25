@@ -29,6 +29,7 @@ import WarehouseDebt from "./pages/WarehouseDebt/WarehouseDebt";
 import WarehousePayment from "./pages/WarehousePayment/WarehousePayment";
 import SettingExchange from "./pages/SettingExchangeRate/SettingExchange";
 import UserInfo from "./pages/UserInfo/UserInfo";
+import UserSettings from "./pages/UserSettings/UserSettings";
 
 const headerOption = [
   { name: "Hàng hóa", link: "/goods" },
@@ -38,6 +39,7 @@ const headerOption = [
   { name: "Khách hàng", link: "/customers" },
   { name: "Kho", link: "/warehouses" },
   { name: "Setting", link: "/setting" },
+
 ];
 
 const RootRouter = () => {
@@ -147,6 +149,10 @@ const router = createBrowserRouter([
       {
         path: "/user/info-user",
         element: <UserInfo />
+      },
+      {
+        path: "/user/settings",
+        element: <UserSettings />
       }
 
     ],

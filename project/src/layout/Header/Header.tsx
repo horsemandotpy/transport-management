@@ -1,4 +1,3 @@
-import React from "react";
 import {
   HeaderLogoWrapper,
   HeaderWraper,
@@ -6,7 +5,7 @@ import {
   PofileWrapper,
 } from "./headerStyle";
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Badge, Dropdown, } from "antd";
+import { Avatar, Badge, Dropdown, MenuProps, } from "antd";
 import { imagines } from "../../assets";
 import { Link, useLocation } from "react-router-dom";
 
@@ -24,7 +23,7 @@ const items: MenuProps['items'] = [
   {
     key: '2',
     label: (
-      <Link to="/user/user-setting">
+      <Link to="/user/settings">
         User Settings
       </Link>
     ),
@@ -39,7 +38,7 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const Header = ({ headerOption }) => {
+const Header = ({ headerOption }: any) => {
   const location = useLocation();
 
   return (
@@ -48,7 +47,7 @@ const Header = ({ headerOption }) => {
         <img src={imagines.logoHeader} alt="techlead-logo" />
       </HeaderLogoWrapper>
       <OptionWrapper>
-        {headerOption.map((item) => {
+        {headerOption.map((item: any) => {
           return <li key={item.name} className={location.pathname === item.link ? "active" : ""}><Link to={item.link}>{item.name}</Link></li>;
         })}
         <PofileWrapper>
